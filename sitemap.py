@@ -5,9 +5,24 @@
 # For further documentation you can visit:
 #     http://intermine.readthedocs.org/en/latest/web-services/
 
-# The following two lines will be needed in every python script:
+# to run this script, run python sitemap.py "organism name" "intermine-url"
+
 from intermine.webservice import Service
-service = Service("https://www.flymine.org/flymine/service")
+import sys
+
+print('Number of arguments:', len(sys.argv), 'arguments.')
+print('Argument List:', str(sys.argv))
+
+mineUrl = sys.argv[1]
+serviceUrl = mineUrl + "/service"
+organism = None
+
+if (len(sys.argv) > 2):
+    organism = sys.argv[2]
+
+print("Generating sitemap for organism: ", organism, ", serviceUrl: ", serviceUrl)
+
+service = Service(serviceUrl)
 
 # Get a new query on the class (table) you will be querying:
 query = service.new_query("Gene")
@@ -15,14 +30,10 @@ query = service.new_query("Gene")
 # The view specifies the output columns
 query.add_view("primaryIdentifier")
 
-# Uncomment and edit the line below (the default) to select a custom sort order:
-#query.add_sort_order("Pathway.primaryIdentifier", "ASC")
-
-# You can edit the constraint values below
 query.add_constraint("primaryIdentifier", "IS NOT NULL", code = "A")
 
-# You can edit the constraint values below
-query.add_constraint("organism.name", "=", "Drosophila melanogaster", code = "B")
+if (organism):
+    query.add_constraint("organism.name", "=", organism, code = "B")
 
 # Uncomment and edit the code below to specify your own custom logic:
 # query.set_logic("A")
@@ -43,7 +54,7 @@ f = open('sitemap' + str(sitemapCount) + ".xml",'w')
 f.write(prefix)
 
 for row in query.rows():
-    urlStr = "<url><loc>http://www.flymine.org/flymine/portal.do?externalids=" + row["primaryIdentifier"].strip() + "</loc></url>\n";
+    urlStr = "<url><loc>" + mineUrl + "/portal.do?externalids=" + row["primaryIdentifier"].strip() + "</loc></url>\n";
     f.write(urlStr)
     rowCount = rowCount + 1
     if rowCount >= 50000:
