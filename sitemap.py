@@ -5,11 +5,13 @@
 # For further documentation you can visit:
 #     http://intermine.readthedocs.org/en/latest/web-services/
 
-# to run this script, run python sitemap.py "intermine-url" "organism name" "entity1,entity2".
-# organism name is optional.
+# to run this script, run python sitemap.py "intermine-url" "organism name" "frequency-of-update".
+# organism name is optional, as is frequency of update
 # examples:
 #    python sitemap.py "https://test.intermine.org/covidmine"
 #    python sitemap.py "https://test.intermine.org/covidmine" "Homo sapiens"
+#    python sitemap.py "https://test.intermine.org/covidmine" "Homo sapiens" "monthly"
+#    python sitemap.py "https://test.intermine.org/covidmine" "" "daily"
 
 from intermine.webservice import Service
 from datetime import date
@@ -37,11 +39,15 @@ def writeMapEntriesToFile( theQuery, columnToWrite, mineUrl, theFile, rowCount):
 mineUrl = sys.argv[1]
 serviceUrl = mineUrl + "/service"
 organism = None
+updateFrequency = "monthly"
 
 if (len(sys.argv) > 2):
     organism = sys.argv[2]
 
-print("Generating sitemap for organism: ", organism, ", serviceUrl: ", serviceUrl)
+if (len(sys.argv) > 3):
+    updateFrequency = sys.argv[3]
+
+print("Generating sitemap for organism: ", organism, ", serviceUrl: ", serviceUrl, "update frequency", updateFrequency)
 
 service = Service(serviceUrl)
 
@@ -103,7 +109,7 @@ for index in range(0,2):
     f.write("<sitemap>\n")
     f.write("<loc>" + mineUrl + "/sitemap" + str(index) + ".xml</loc>\n")
     f.write("<lastmod>" + updateDate + "</lastmod>\n")
-    f.write("<changefreq>daily</changefreq><priority>0.5</priority>\n")
+    f.write("<changefreq>" + updateFrequency + "</changefreq><priority>0.5</priority>\n")
     f.write("</sitemap>\n")
     index += 1
 

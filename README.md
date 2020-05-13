@@ -10,14 +10,15 @@ generates a sitemap for your (jsp-based) intermine.
 
 ### generating a sitemap
 
-To run this script, run python sitemap.py "intermine-url" "organism name".
-Organism name is optional, URL is required. Don't add `/service` to the end!
+To run this script, run python sitemap.py "intermine-url" "organism name" "update-frequency".
+Organism name and frequency are optional, URL is required. Don't add `/service` to the end!
 
 
 #### examples
 
 ```bash
-python sitemap.py "https://test.intermine.org/covidmine"
-python sitemap.py "https://test.intermine.org/covidmine" "Homo sapiens"
-
+#    python sitemap.py "https://test.intermine.org/covidmine"
+#    python sitemap.py "https://test.intermine.org/covidmine" "Homo sapiens"
+#    python sitemap.py "https://test.intermine.org/covidmine" "Homo sapiens" "monthly"
+#    python sitemap.py "https://test.intermine.org/covidmine" "" "daily"
 ```
