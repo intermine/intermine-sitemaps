@@ -61,6 +61,11 @@ proteinQuery = service.new_query("Protein")
 proteinQuery.add_view("primaryAccession")
 proteinQuery.add_constraint("primaryAccession", "IS NOT NULL", code = "A")
 
+# Query Genome
+genomeQuery = service.new_query("Genome")
+genomeQuery.add_view("primaryIdentifier")
+genomeQuery.add_constraint("primaryIdentifier", "IS NOT NULL", code = "A")
+
 # only restrain by organism if we're supposed to...
 if (organism):
     geneQuery.add_constraint("organism.name", "=", organism, code = "B")
@@ -85,6 +90,7 @@ f.write(prefix)
 
 writeMapEntriesToFile(proteinQuery, "primaryAccession", mineUrl, f, rowCount)
 writeMapEntriesToFile(geneQuery, "primaryIdentifier", mineUrl, f, rowCount)
+writeMapEntriesToFile(genomeQuery, "primaryIdentifier", mineUrl, f, rowCount)
 
 f.write(postfix)
 f.close()
