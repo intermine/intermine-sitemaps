@@ -110,8 +110,8 @@ index = 0;
 today = date.today()
 updateDate = today.strftime("%Y-%m-%d")
 
-# we could improve this by checking how many maps exist!!
-for index in range(0,2):
+# print out the location of the sitemap(s)
+for index in range(0,(sitemapCount+1)):
     f.write("<sitemap>\n")
     f.write("<loc>" + mineUrl + "/sitemap" + str(index) + ".xml</loc>\n")
     f.write("<lastmod>" + updateDate + "</lastmod>\n")
